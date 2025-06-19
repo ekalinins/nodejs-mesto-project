@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 import 'dotenv/config';
-import { logger } from 'utils';
 import { Server } from 'http';
+import { logger } from 'utils';
 import app from './app';
 
 const { APP_PORT, DB_URL } = process.env;
