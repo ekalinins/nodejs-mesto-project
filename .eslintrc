@@ -17,6 +17,7 @@
   "settings": {
     "import/resolver": {
       "node": {
+        "paths": ["src"],
         "extensions": [
           ".ts",
           ".js",
@@ -41,9 +42,15 @@
   },
   "overrides": [
     {
-      "files": ["*.js"],
+      "files": ["**/*.js"],
       "rules": {
         "no-underscore-dangle": "off"
+      }
+    },
+    {
+      "files": ["**/*.ts"],
+      "rules": {
+        "import/prefer-default-export": "off"
       }
     }
   ]

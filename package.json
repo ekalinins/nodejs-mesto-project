@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "nodemon",
-    "start": "tsx src/app.ts",
+    "start": "tsx src/index.ts",
     "build": "npm run clean && npm run format && npm run lint && tsc",
     "lint": "eslint --ext ts,tsx,js,mjs .",
     "lint:fix": "npm run format && npm run lint -- --fix",
@@ -16,7 +16,6 @@
   "license": "ISC",
   "dependencies": {
     "@types/body-parser": "^1.19.6",
-    "body-parser": "^2.2.0",
     "celebrate": "^15.0.3",
     "dotenv": "^16.5.0",
     "express": "^4.21.0",
