@@ -1,6 +1,10 @@
-import { Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 
-export const getAllUsers = async (req: Request, res: Response) => {};
+export const getAllUsers = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {};
 
 export const getUserById = async (req: Request, res: Response) => {};
 

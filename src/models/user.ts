@@ -1,12 +1,10 @@
-import mongoose, {
-  Schema,
-} from 'mongoose';
+import mongoose, { Schema } from 'mongoose';
 import { Models } from './models-constants';
 
 export interface IUser {
-  name: string
-  about: string
-  avatar: string
+  name: string;
+  about: string;
+  avatar: string;
 }
 
 const userSchema = new Schema<IUser>({

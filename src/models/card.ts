@@ -1,6 +1,4 @@
-import mongoose, {
-  Schema, Types,
-} from 'mongoose';
+import mongoose, { Schema, Types } from 'mongoose';
 import { Models } from './models-constants';
 
 export interface ICard {
