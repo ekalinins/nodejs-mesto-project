@@ -5,7 +5,7 @@ import { ERROR_MESSAGES } from 'common/error-messages';
 import { HttpStatuses } from 'common';
 
 export const getAllUsers = async (
-  req: Request,
+  _: Request,
   res: Response,
   next: NextFunction,
 ) => {

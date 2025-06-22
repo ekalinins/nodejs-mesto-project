@@ -1,4 +1,6 @@
-import mongoose, { Schema, Types } from 'mongoose';
+import mongoose, {
+  Schema, Types, Document, Model,
+} from 'mongoose';
 import { Models } from './models-constants';
 
 export interface ICard {
@@ -9,7 +11,9 @@ export interface ICard {
   createdAt: Date;
 }
 
-const cardSchema = new Schema<ICard>({
+export interface IUserDocument extends ICard, Document {}
+
+const cardSchema = new Schema<IUserDocument>({
   name: {
     type: String,
     required: true,
@@ -34,6 +38,10 @@ const cardSchema = new Schema<ICard>({
     type: Date,
     default: Date.now,
   },
+}, {
+  toObject: {
+    versionKey: false,
+  },
 });
 
-export default mongoose.model<ICard>(Models.card, cardSchema);
+export default mongoose.model<IUserDocument>(Models.card, cardSchema) as Model<IUserDocument>;
