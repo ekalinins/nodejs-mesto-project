@@ -1,4 +1,4 @@
-import mongoose, { Schema } from 'mongoose';
+import mongoose, { Schema, Document, Model } from 'mongoose';
 import { Models } from './models-constants';
 
 export interface IUser {
@@ -7,7 +7,9 @@ export interface IUser {
   avatar: string;
 }
 
-const userSchema = new Schema<IUser>({
+export interface IUserDocument extends IUser, Document {}
+
+const userSchema = new Schema<IUserDocument>({
   name: {
     type: String,
     required: true,
@@ -24,6 +26,10 @@ const userSchema = new Schema<IUser>({
     type: String,
     required: true,
   },
+}, {
+  toObject: {
+    versionKey: false,
+  },
 });
 
-export default mongoose.model<IUser>(Models.user, userSchema);
+export default mongoose.model<IUserDocument>(Models.user, userSchema) as Model<IUserDocument>;

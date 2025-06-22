@@ -42,7 +42,7 @@
   },
   "overrides": [
     {
-      "files": ["**/*.js"],
+      "files": ["**/*.js", "**/*.ts"],
       "rules": {
         "no-underscore-dangle": "off"
       }
