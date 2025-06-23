@@ -1,6 +1,8 @@
 import { NextFunction, Request, Response } from 'express';
 import User, { IUser } from 'models/user';
-import { BadRequestError, NotFoundError } from 'utils';
+import {
+  BadRequestError, isCastError, isValidationError, NotFoundError,
+} from 'utils';
 import { ERROR_MESSAGES } from 'common/error-messages';
 import { HttpStatuses } from 'common';
 
@@ -18,7 +20,11 @@ export const getAllUsers = async (
   }
 };
 
-export const getUserById = async (req: Request, res: Response, next: NextFunction) => {
+export const getUserById = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
   try {
     const user = await User.findById(req.params.userId);
 
@@ -29,34 +35,42 @@ export const getUserById = async (req: Request, res: Response, next: NextFunctio
 
     res.send(user.toObject());
   } catch (err) {
+    if (isCastError(err)) {
+      next(new NotFoundError(ERROR_MESSAGES.USER_INCORRECT_ID));
+      return;
+    }
+
     next(err);
   }
 };
 
-export const createUser = async (req: Request, res: Response, next: NextFunction) => {
+export const createUser = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
   try {
     const { avatar, name, about } = req.body as IUser;
-
-    if (!avatar || !name || !about) {
-      next(new BadRequestError(ERROR_MESSAGES.USER_CREATE_INVALID_DATA));
-      return;
-    }
 
     const createdUser = await User.create({ avatar, name, about });
 
     res.status(HttpStatuses.CREATED).send(createdUser.toObject());
   } catch (err) {
+    if (isValidationError(err)) {
+      next(new BadRequestError(ERROR_MESSAGES.USER_CREATE_INVALID_DATA));
+      return;
+    }
+
     next(err);
   }
 };
 
-export const updateUserInfo = async (req: Request, res: Response, next: NextFunction) => {
+export const updateUserInfo = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
   try {
-    if (!req.body?.name && !req.body.about) {
-      next(new BadRequestError(ERROR_MESSAGES.USER_PROFILE_INCORRECT_DATA));
-      return;
-    }
-
     const { name, about } = req.body;
 
     const user = await User.findByIdAndUpdate(
@@ -72,17 +86,21 @@ export const updateUserInfo = async (req: Request, res: Response, next: NextFunc
 
     res.send(user.toObject());
   } catch (err) {
+    if (isValidationError(err)) {
+      next(new BadRequestError(ERROR_MESSAGES.USER_PROFILE_INCORRECT_DATA));
+      return;
+    }
+
     next(err);
   }
 };
 
-export const updateUserAvatar = async (req: Request, res: Response, next: NextFunction) => {
+export const updateUserAvatar = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
   try {
-    if (!req.body.avatar) {
-      next(new BadRequestError(ERROR_MESSAGES.USER_AVATAR_INCORRECT_DATA));
-      return;
-    }
-
     const { avatar } = req.body;
 
     const updatedUser = await User.findByIdAndUpdate(
@@ -98,6 +116,11 @@ export const updateUserAvatar = async (req: Request, res: Response, next: NextFu
 
     res.send(updatedUser.toObject());
   } catch (err) {
+    if (isValidationError(err)) {
+      next(new BadRequestError(ERROR_MESSAGES.USER_AVATAR_INCORRECT_DATA));
+      return;
+    }
+
     next(err);
   }
 };

@@ -1,0 +1,8 @@
+import { Error } from 'mongoose';
+
+export const isValidationError = (
+  error: unknown,
+): error is Error.ValidationError => error instanceof Error.ValidationError;
+
+export const isCastError = (error: unknown):
+  error is Error.CastError => error instanceof Error.CastError;
