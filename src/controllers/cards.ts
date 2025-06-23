@@ -1,9 +1,15 @@
 import { NextFunction, Request, Response } from 'express';
 import Card from 'models/card';
-import { BadRequestError, NotFoundError } from 'utils';
+import {
+  BadRequestError, isCastError, isValidationError, NotFoundError,
+} from 'utils';
 import { ERROR_MESSAGES, SUCCESS_MESSAGES } from 'common/error-messages';
 
-export const getAllCards = async (_: Request, res: Response, next: NextFunction) => {
+export const getAllCards = async (
+  _: Request,
+  res: Response,
+  next: NextFunction,
+) => {
   try {
     const cards = await Card.find({}).select('-__v');
     res.send(cards);
@@ -12,24 +18,32 @@ export const getAllCards = async (_: Request, res: Response, next: NextFunction)
   }
 };
 
-export const createCard = async (req: Request, res: Response, next: NextFunction) => {
+export const createCard = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
   try {
     const { name, link } = req.body;
-
-    if (!name || !link) {
-      next(new BadRequestError(ERROR_MESSAGES.CARD_CREATE_INVALID_DATA));
-      return;
-    }
 
     const card = await Card.create({ name, link, owner: req.user?._id });
 
     res.send(card.toObject());
   } catch (err) {
+    if (isValidationError(err)) {
+      next(new BadRequestError(ERROR_MESSAGES.CARD_CREATE_INVALID_DATA));
+      return;
+    }
+
     next(err);
   }
 };
 
-export const deleteCard = async (req: Request, res: Response, next: NextFunction) => {
+export const deleteCard = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
   try {
     const { cardId } = req.params;
 
@@ -44,11 +58,20 @@ export const deleteCard = async (req: Request, res: Response, next: NextFunction
 
     res.json({ message: SUCCESS_MESSAGES.CARD_DELETED });
   } catch (err) {
+    if (isCastError(err)) {
+      next(new NotFoundError(ERROR_MESSAGES.CARD_INCORRECT_ID));
+      return;
+    }
+
     next(err);
   }
 };
 
-export const likeCard = async (req: Request, res: Response, next: NextFunction) => {
+export const likeCard = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
   try {
     const userId = req.user?._id;
 
@@ -65,11 +88,20 @@ export const likeCard = async (req: Request, res: Response, next: NextFunction) 
 
     res.send(cardToLike.toObject());
   } catch (err) {
+    if (isCastError(err)) {
+      next(new NotFoundError(ERROR_MESSAGES.CARD_INCORRECT_ID));
+      return;
+    }
+
     next(err);
   }
 };
 
-export const unlikeCard = async (req: Request, res: Response, next: NextFunction) => {
+export const unlikeCard = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
   try {
     const cardToUnlike = await Card.findByIdAndUpdate(
       req.params.cardId,
@@ -84,6 +116,11 @@ export const unlikeCard = async (req: Request, res: Response, next: NextFunction
 
     res.send(cardToUnlike.toObject());
   } catch (err) {
+    if (isCastError(err)) {
+      next(new NotFoundError(ERROR_MESSAGES.CARD_INCORRECT_ID));
+      return;
+    }
+
     next(err);
   }
 };
