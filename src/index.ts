@@ -4,7 +4,7 @@ import { Server } from 'http';
 import { logger } from 'utils';
 import app from './app';
 
-const { APP_PORT, DB_URL } = process.env;
+const { APP_PORT = 3001, DB_URL = 'mongodb://localhost:27017/mestodb' } = process.env;
 
 let server: Server | undefined;
 
