@@ -1,10 +1,14 @@
 import { NextFunction, Request, Response } from 'express';
 import User, { IUser } from 'models/user';
 import {
-  BadRequestError, isCastError, isValidationError, NotFoundError,
+  BadRequestError, isCastError, isDocumentNotFound, isValidationError, NotFoundError,
 } from 'utils';
 import { ERROR_MESSAGES } from 'common/error-messages';
 import { HttpStatuses } from 'common';
+import bcrypt from 'bcryptjs';
+import jwt from 'jsonwebtoken';
+
+const { JWT_SECRET = 'dev-secret-key' } = process.env;
 
 export const getAllUsers = async (
   _: Request,
@@ -118,6 +122,33 @@ export const updateUserAvatar = async (
   } catch (err) {
     if (isValidationError(err)) {
       next(new BadRequestError(ERROR_MESSAGES.USER_AVATAR_INCORRECT_DATA));
+      return;
+    }
+
+    next(err);
+  }
+};
+
+// TODO: test
+export const login = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const { email, password } = req.body;
+
+    const user = await User.findOne({ email }).select('+password').orFail();
+
+    const isValidPassword = await bcrypt.compare(password, user.password);
+
+    if (!isValidPassword) {
+      next(new BadRequestError(ERROR_MESSAGES.INVALID_LOGIN_CREDENTIALS));
+      return;
+    }
+
+    const token = jwt.sign({ _id: user.id }, JWT_SECRET, { expiresIn: '14d' });
+
+    res.cookie('token', token, { httpOnly: true });
+  } catch (err) {
+    if (isDocumentNotFound(err)) {
+      next(new BadRequestError(ERROR_MESSAGES.INVALID_LOGIN_CREDENTIALS));
       return;
     }
 

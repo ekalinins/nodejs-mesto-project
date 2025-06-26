@@ -5,11 +5,14 @@ import { auth, errorHandler } from 'middlewares';
 import { HttpStatuses } from 'common';
 import { ERROR_MESSAGES } from 'common/error-messages';
 import { errors } from 'celebrate';
+import cookieParser from 'cookie-parser';
 
 const app = express();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+app.use(cookieParser());
 
 app.use(auth);
 app.use('/users', usersRouter);

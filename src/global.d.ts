@@ -4,6 +4,7 @@ declare namespace NodeJS {
   interface ProcessEnv {
     APP_PORT: string;
     DB_URL: string;
+    JWT_SECRET: string;
   }
 }
 

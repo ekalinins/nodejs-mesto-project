@@ -6,3 +6,6 @@ export const isValidationError = (
 
 export const isCastError = (error: unknown):
   error is Error.CastError => error instanceof Error.CastError;
+
+export const isDocumentNotFound = (error: unknown):
+  error is Error.DocumentNotFoundError => error instanceof Error.DocumentNotFoundError;
