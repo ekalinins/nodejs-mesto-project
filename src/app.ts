@@ -4,6 +4,7 @@ import cardsRouter from 'routes/cards';
 import { auth, errorHandler } from 'middlewares';
 import { HttpStatuses } from 'common';
 import { ERROR_MESSAGES } from 'common/error-messages';
+import { errors } from 'celebrate';
 
 const app = express();
 
@@ -20,6 +21,7 @@ app.use('*', (_: Request, res: Response) => {
     .send({ message: ERROR_MESSAGES.UNKNOWN_RESOURCE });
 });
 
+app.use(errors());
 app.use(errorHandler);
 
 export default app;
