@@ -9,6 +9,7 @@ export enum ERROR_MESSAGES {
   CARD_NOT_FOUND = 'Карточка с указанным _id не найдена',
   CARD_CREATE_INVALID_DATA = 'Переданы некорректные данные при создании карточки',
   CARD_INCORRECT_ID = 'Некорректный ID карточки',
+  CARD_DELETE_FORBIDDEN = 'Нельзя удалить каточку юзера',
   UNKNOWN_RESOURCE = 'Запрашиваемый ресурс не найден',
   INVALID_EMAIL = 'Некорректный email',
   USER_ALREADY_REGISTERED = 'Пользователь уже зарегистрирован',

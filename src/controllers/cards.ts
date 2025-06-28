@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import Card from 'models/card';
 import {
-  BadRequestError,
+  BadRequestError, ForbiddenError,
   isCastError,
   isValidationError,
   NotFoundError,
@@ -48,12 +48,17 @@ export const deleteCard = async (
   next: NextFunction,
 ) => {
   try {
-    const { cardId } = req.params;
+    const { user } = req;
 
-    const cardToDelete = await Card.findById({ _id: cardId });
+    const cardToDelete = await Card.findById({ _id: req.params.cardId });
 
     if (!cardToDelete) {
       next(new NotFoundError(ERROR_MESSAGES.CARD_NOT_FOUND));
+      return;
+    }
+
+    if (user?._id !== cardToDelete.owner.toString()) {
+      next(new ForbiddenError(ERROR_MESSAGES.CARD_DELETE_FORBIDDEN));
       return;
     }
 
