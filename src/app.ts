@@ -1,7 +1,9 @@
 import express, { Request, Response } from 'express';
 import usersRouter from 'routes/users';
 import cardsRouter from 'routes/cards';
-import { auth, errorHandler } from 'middlewares';
+import {
+  auth, errorHandler, validateSignin, validateSignup,
+} from 'middlewares';
 import { HttpStatuses } from 'common';
 import { ERROR_MESSAGES } from 'common/error-messages';
 import { errors } from 'celebrate';
@@ -15,8 +17,8 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use(cookieParser());
 
-app.post('/signin', login);
-app.post('/signup', createUser);
+app.post('/signup', validateSignup, createUser);
+app.post('/signin', validateSignin, login);
 
 app.use(auth);
 app.use('/users', usersRouter);
