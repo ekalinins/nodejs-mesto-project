@@ -10,6 +10,7 @@ export enum ERROR_MESSAGES {
   CARD_INCORRECT_ID = 'Некорректный ID карточки',
   UNKNOWN_RESOURCE = 'Запрашиваемый ресурс не найден',
   INVALID_EMAIL = 'Некорректный email',
+  USER_ALREADY_REGISTERED = 'Пользователь уже зарегистрирован',
   INVALID_LOGIN_CREDENTIALS = 'Передан неверный логин или пароль',
   INTERNAL_ERROR = 'Ошибка сервера. Что то пошло не так',
 }

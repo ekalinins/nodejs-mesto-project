@@ -1,7 +1,12 @@
 import { NextFunction, Request, Response } from 'express';
 import User, { IUser } from 'models/user';
 import {
-  BadRequestError, isCastError, isDocumentNotFound, isValidationError, NotFoundError,
+  BadRequestError, ConflictError,
+  extractValidationErrors,
+  isCastError,
+  isDocumentNotFound,
+  isValidationError, MongooseDuplicateErrorCode,
+  NotFoundError,
 } from 'utils';
 import { ERROR_MESSAGES } from 'common/error-messages';
 import { HttpStatuses } from 'common';
@@ -54,14 +59,36 @@ export const createUser = async (
   next: NextFunction,
 ) => {
   try {
-    const { avatar, name, about } = req.body as IUser;
+    const {
+      avatar, name, about, email, password,
+    } = req.body as IUser;
 
-    const createdUser = await User.create({ avatar, name, about });
+    const hashPassword = await bcrypt.hash(password, 10);
 
-    res.status(HttpStatuses.CREATED).send(createdUser.toObject());
-  } catch (err) {
+    const createdUser = await User.create({
+      avatar,
+      name,
+      about,
+      password: hashPassword,
+      email,
+    });
+
+    const { password: userPassword, ...response } = createdUser.toObject();
+
+    res.status(HttpStatuses.CREATED).send(response);
+  } catch (err: any) {
     if (isValidationError(err)) {
-      next(new BadRequestError(ERROR_MESSAGES.USER_CREATE_INVALID_DATA));
+      next(
+        new BadRequestError(
+          ERROR_MESSAGES.USER_CREATE_INVALID_DATA,
+          extractValidationErrors(err),
+        ),
+      );
+      return;
+    }
+
+    if (err?.code === MongooseDuplicateErrorCode) {
+      next(new ConflictError(ERROR_MESSAGES.USER_ALREADY_REGISTERED));
       return;
     }
 
@@ -129,7 +156,11 @@ export const updateUserAvatar = async (
   }
 };
 
-export const login = async (req: Request, res: Response, next: NextFunction) => {
+export const login = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
   try {
     const { email, password } = req.body;
 
