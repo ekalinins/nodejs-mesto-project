@@ -1,4 +1,5 @@
 import 'express';
+import { Payload } from 'types';
 
 declare namespace NodeJS {
   interface ProcessEnv {
@@ -8,11 +9,12 @@ declare namespace NodeJS {
   }
 }
 
-// TODO: remove after auth scope completion
+declare module 'jsonwebtoken' {
+  export interface JwtPayload extends Payload {}
+}
+
 declare module 'express-serve-static-core' {
   interface Request {
-    user?: {
-      _id: string;
-    };
+    user?: Payload;
   }
 }

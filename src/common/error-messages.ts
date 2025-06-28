@@ -13,6 +13,8 @@ export enum ERROR_MESSAGES {
   USER_ALREADY_REGISTERED = 'Пользователь уже зарегистрирован',
   INVALID_LOGIN_CREDENTIALS = 'Передан неверный логин или пароль',
   INTERNAL_ERROR = 'Ошибка сервера. Что то пошло не так',
+  AUTH_REQUESTED = 'Необходима авторизация',
+  INCORRECT_TOKEN = 'Неверный или устаревший токен',
 }
 
 export enum SUCCESS_MESSAGES {

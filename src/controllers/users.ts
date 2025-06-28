@@ -1,19 +1,22 @@
 import { NextFunction, Request, Response } from 'express';
 import User, { IUser } from 'models/user';
 import {
-  BadRequestError, ConflictError,
+  BadRequestError,
+  ConflictError,
   extractValidationErrors,
   isCastError,
   isDocumentNotFound,
-  isValidationError, MongooseDuplicateErrorCode,
+  isValidationError,
+  MongooseDuplicateErrorCode,
   NotFoundError,
 } from 'utils';
 import { ERROR_MESSAGES } from 'common/error-messages';
 import { HttpStatuses } from 'common';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
+import { DEFAULT_JWT_SECRET } from 'common/constants';
 
-const { JWT_SECRET = 'dev-secret-key' } = process.env;
+const { JWT_SECRET = DEFAULT_JWT_SECRET } = process.env;
 
 export const getAllUsers = async (
   _: Request,
@@ -65,15 +68,15 @@ export const createUser = async (
 
     const hashPassword = await bcrypt.hash(password, 10);
 
-    const createdUser = await User.create({
-      avatar,
-      name,
-      about,
-      password: hashPassword,
-      email,
-    });
-
-    const { password: userPassword, ...response } = createdUser.toObject();
+    const { password: userPassword, ...response } = (
+      await User.create({
+        avatar,
+        name,
+        about,
+        password: hashPassword,
+        email,
+      })
+    ).toObject();
 
     res.status(HttpStatuses.CREATED).send(response);
   } catch (err: any) {
@@ -175,7 +178,7 @@ export const login = async (
 
     const token = jwt.sign({ _id: user.id }, JWT_SECRET, { expiresIn: '14d' });
 
-    res.cookie('token', token, { httpOnly: true });
+    res.cookie('token', token, { httpOnly: true }).end();
   } catch (err) {
     if (isDocumentNotFound(err)) {
       next(new BadRequestError(ERROR_MESSAGES.INVALID_LOGIN_CREDENTIALS));
