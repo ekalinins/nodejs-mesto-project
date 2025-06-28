@@ -1,5 +1,5 @@
 import mongoose, { Schema, Document, Model } from 'mongoose';
-import { isEmail } from 'validator';
+import validator from 'validator';
 import { ERROR_MESSAGES } from 'common/error-messages';
 import { linkRegExp } from 'common';
 import { Models } from './models-constants';
@@ -20,7 +20,7 @@ const userSchema = new Schema<IUserDocument>(
       type: String,
       unique: true,
       validate: {
-        validator: (v) => isEmail(v),
+        validator: (v) => validator.isEmail(v),
         message: ERROR_MESSAGES.INVALID_EMAIL,
       },
       required: true,
