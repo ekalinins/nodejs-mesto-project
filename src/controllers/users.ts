@@ -188,3 +188,22 @@ export const login = async (
     next(err);
   }
 };
+
+export const getCurrentUser = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+): Promise<void> => {
+  try {
+    const user = await User.findById(req.user?._id);
+
+    if (!user) {
+      next(new NotFoundError(ERROR_MESSAGES.USER_NOT_FOUND));
+      return;
+    }
+
+    res.json(user);
+  } catch (err) {
+    next(err);
+  }
+};
