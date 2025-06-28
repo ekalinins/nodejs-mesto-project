@@ -3,7 +3,7 @@ import User, { IUser } from 'models/user';
 import {
   BadRequestError,
   ConflictError,
-  extractValidationErrors,
+  extractValidationErrors, ForbiddenError,
   isCastError,
   isDocumentNotFound,
   isValidationError,
@@ -105,18 +105,28 @@ export const updateUserInfo = async (
   next: NextFunction,
 ) => {
   try {
-    const { name, about } = req.body;
+    const { body, user: _user } = req;
 
-    const user = await User.findByIdAndUpdate(
-      req.user?._id,
-      { name, about },
-      { new: true, runValidators: true },
+    const user = await User.findById(
+      _user?._id,
     );
+
+    if (user?._id?.toString() !== _user?._id) {
+      next(new ForbiddenError(ERROR_MESSAGES.USER_FORBIDDEN));
+      return;
+    }
 
     if (!user) {
       next(new NotFoundError(ERROR_MESSAGES.USER_NOT_EXIST));
       return;
     }
+
+    Object.assign(user, {
+      name: body.name,
+      about: body.about,
+    });
+
+    await user.save();
 
     res.send(user.toObject());
   } catch (err) {
@@ -124,7 +134,6 @@ export const updateUserInfo = async (
       next(new BadRequestError(ERROR_MESSAGES.USER_PROFILE_INCORRECT_DATA));
       return;
     }
-
     next(err);
   }
 };
@@ -137,18 +146,23 @@ export const updateUserAvatar = async (
   try {
     const { avatar } = req.body;
 
-    const updatedUser = await User.findByIdAndUpdate(
-      req.user?._id,
-      { avatar },
-      { new: true, runValidators: true },
-    );
+    const user = await User.findById(req.user?._id);
 
-    if (!updatedUser) {
+    if (!user) {
       next(new NotFoundError(ERROR_MESSAGES.USER_NOT_EXIST));
       return;
     }
 
-    res.send(updatedUser.toObject());
+    if (user?._id?.toString() !== req.user?._id) {
+      next(new ForbiddenError(ERROR_MESSAGES.USER_FORBIDDEN));
+      return;
+    }
+
+    user.avatar = avatar;
+
+    await user.save();
+
+    res.send(user.toObject());
   } catch (err) {
     if (isValidationError(err)) {
       next(new BadRequestError(ERROR_MESSAGES.USER_AVATAR_INCORRECT_DATA));

@@ -6,6 +6,7 @@ export enum ERROR_MESSAGES {
   USER_INCORRECT_ID = 'Некорректный ID пользователя',
   USER_NOT_FOUND = 'Пользователь не найден',
   USER_INVALID_AVATAR_URL = 'Некорректный URL аватара',
+  USER_FORBIDDEN = 'Запрещено обновлять данные для данного юзера',
   CARD_NOT_FOUND = 'Карточка с указанным _id не найдена',
   CARD_CREATE_INVALID_DATA = 'Переданы некорректные данные при создании карточки',
   CARD_INCORRECT_ID = 'Некорректный ID карточки',
