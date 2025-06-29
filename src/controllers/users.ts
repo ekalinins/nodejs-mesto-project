@@ -3,7 +3,7 @@ import User, { IUser } from 'models/user';
 import {
   BadRequestError,
   ConflictError,
-  extractValidationErrors, ForbiddenError,
+  extractValidationErrors,
   isCastError,
   isDocumentNotFound,
   isValidationError,
@@ -105,28 +105,18 @@ export const updateUserInfo = async (
   next: NextFunction,
 ) => {
   try {
-    const { body, user: _user } = req;
+    const { name, about } = req.body;
 
-    const user = await User.findById(
-      _user?._id,
+    const user = await User.findByIdAndUpdate(
+      req.user?._id,
+      { name, about },
+      { new: true, runValidators: true },
     );
-
-    if (user?._id?.toString() !== _user?._id) {
-      next(new ForbiddenError(ERROR_MESSAGES.USER_FORBIDDEN));
-      return;
-    }
 
     if (!user) {
       next(new NotFoundError(ERROR_MESSAGES.USER_NOT_EXIST));
       return;
     }
-
-    Object.assign(user, {
-      name: body.name,
-      about: body.about,
-    });
-
-    await user.save();
 
     res.send(user.toObject());
   } catch (err) {
@@ -134,6 +124,7 @@ export const updateUserInfo = async (
       next(new BadRequestError(ERROR_MESSAGES.USER_PROFILE_INCORRECT_DATA));
       return;
     }
+
     next(err);
   }
 };
@@ -146,23 +137,13 @@ export const updateUserAvatar = async (
   try {
     const { avatar } = req.body;
 
-    const user = await User.findById(req.user?._id);
+    const updatedUser = await User.findByIdAndUpdate(
+      req.user?._id,
+      { avatar },
+      { new: true, runValidators: true },
+    ).orFail();
 
-    if (!user) {
-      next(new NotFoundError(ERROR_MESSAGES.USER_NOT_EXIST));
-      return;
-    }
-
-    if (user?._id?.toString() !== req.user?._id) {
-      next(new ForbiddenError(ERROR_MESSAGES.USER_FORBIDDEN));
-      return;
-    }
-
-    user.avatar = avatar;
-
-    await user.save();
-
-    res.send(user.toObject());
+    res.send(updatedUser.toObject());
   } catch (err) {
     if (isValidationError(err)) {
       next(new BadRequestError(ERROR_MESSAGES.USER_AVATAR_INCORRECT_DATA));
@@ -210,11 +191,6 @@ export const getCurrentUser = async (
 ): Promise<void> => {
   try {
     const user = await User.findById(req.user?._id);
-
-    if (!user) {
-      next(new NotFoundError(ERROR_MESSAGES.USER_NOT_FOUND));
-      return;
-    }
 
     res.json(user);
   } catch (err) {
