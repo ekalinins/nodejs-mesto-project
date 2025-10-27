@@ -17,6 +17,7 @@ export const auth = async (req: Request, res: Response, next: NextFunction) => {
   try {
     req.user = jwt.verify(token, JWT_SECRET) as JwtPayload;
     next();
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (_: unknown) {
     next(new UnauthorizedError(ERROR_MESSAGES.INCORRECT_TOKEN));
   }

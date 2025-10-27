@@ -6,6 +6,7 @@ export const isValidationError = (
   error: unknown,
 ): error is Error.ValidationError => error instanceof Error.ValidationError;
 
+// eslint-disable-next-line max-len
 export const isCastError = (error: unknown): error is Error.CastError => error instanceof Error.CastError;
 
 export const isDocumentNotFound = (

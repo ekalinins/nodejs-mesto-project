@@ -2,7 +2,12 @@ import express, { Request, Response } from 'express';
 import usersRouter from 'routes/users';
 import cardsRouter from 'routes/cards';
 import {
-  auth, errorHandler, errorLogger, requestLogger, validateSignin, validateSignup,
+  auth,
+  errorHandler,
+  errorLogger,
+  requestLogger,
+  validateSignin,
+  validateSignup,
 } from 'middlewares';
 import { ERROR_MESSAGES } from 'common/error-messages';
 import { errors } from 'celebrate';

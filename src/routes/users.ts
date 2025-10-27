@@ -1,11 +1,16 @@
 import { Router } from 'express';
 import {
-  getAllUsers, getCurrentUser,
+  getAllUsers,
+  getCurrentUser,
   getUserById,
   updateUserAvatar,
   updateUserInfo,
 } from 'controllers/users';
-import { validateUserId, validateAvatarUpdate, validateProfileUpdate } from 'middlewares';
+import {
+  validateUserId,
+  validateAvatarUpdate,
+  validateProfileUpdate,
+} from 'middlewares';
 
 const router = Router();
 
