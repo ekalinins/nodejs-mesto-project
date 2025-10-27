@@ -1,5 +1,5 @@
 /* eslint max-classes-per-file: 0, default-param-last: 0 */
-import { HttpStatuses } from 'common';
+import { HttpStatuses } from '@/common';
 
 type ErrDetails = Record<string, any>;
 

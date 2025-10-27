@@ -1,2 +1,2 @@
 export * from './logger';
-export * from 'utils/errors';
+export * from './errors';

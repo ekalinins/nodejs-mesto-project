@@ -1,5 +1,5 @@
 import { celebrate, Joi, Segments } from 'celebrate';
-import { linkRegExp } from 'common';
+import { linkRegExp } from '@/common';
 
 export const validateSignup = celebrate({
   [Segments.BODY]: Joi.object().keys({

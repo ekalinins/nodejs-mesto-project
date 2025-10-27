@@ -16,19 +16,12 @@
   ],
   "settings": {
     "import/resolver": {
-      "node": {
-        "paths": ["src"],
-        "extensions": [
-          ".ts",
-          ".js",
-          ".json"
-        ]
+      "typescript": {
+        "alwaysTryTypes": true,
+        "project": "./tsconfig.json"
       }
     },
-    "import/extensions": [
-      ".js",
-      ".ts"
-    ]
+    "import/extensions": [".ts", ".js", ".json"]
   },
   "rules": {
     "import/extensions": [

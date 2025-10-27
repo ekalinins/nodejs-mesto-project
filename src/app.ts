@@ -1,6 +1,6 @@
 import express, { Request, Response } from 'express';
-import usersRouter from 'routes/users';
-import cardsRouter from 'routes/cards';
+import usersRouter from '@/routes/users';
+import cardsRouter from '@/routes/cards';
 import {
   auth,
   errorHandler,
@@ -8,12 +8,12 @@ import {
   requestLogger,
   validateSignin,
   validateSignup,
-} from 'middlewares';
-import { ERROR_MESSAGES } from 'common/error-messages';
+} from '@/middlewares';
+import { ERROR_MESSAGES } from '@/common/error-messages';
 import { errors } from 'celebrate';
 import cookieParser from 'cookie-parser';
-import { createUser, login } from 'controllers/users';
-import { NotFoundError } from 'utils';
+import { createUser, login } from '@/controllers/users';
+import { NotFoundError } from '@/utils/errors';
 
 const app = express();
 

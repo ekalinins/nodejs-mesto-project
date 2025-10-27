@@ -5,12 +5,12 @@ import {
   getUserById,
   updateUserAvatar,
   updateUserInfo,
-} from 'controllers/users';
+} from '@/controllers/users';
 import {
   validateUserId,
   validateAvatarUpdate,
   validateProfileUpdate,
-} from 'middlewares';
+} from '@/middlewares';
 
 const router = Router();
 

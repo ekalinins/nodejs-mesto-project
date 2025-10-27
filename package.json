@@ -2,7 +2,7 @@
   "name": "yp-mesto-backend",
   "version": "1.0.0",
   "description": "",
-  "type": "module",
+  "main": "dist/app.js",
   "scripts": {
     "dev": "nodemon",
     "start": "tsx src/index.ts",
@@ -11,6 +11,9 @@
     "lint:fix": "npm run format && npm run lint -- --fix",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "clean": "rm -rf dist"
+  },
+  "_moduleAliases": {
+    "@": "dist"
   },
   "keywords": [],
   "author": "Egor Kalinin",
@@ -23,6 +26,7 @@
     "express": "^4.21.0",
     "express-winston": "^4.2.0",
     "jsonwebtoken": "^9.0.2",
+    "module-alias": "^2.2.3",
     "mongoose": "^8.16.0",
     "validator": "^13.15.15",
     "winston": "^3.17.0"
@@ -32,12 +36,14 @@
     "@types/dotenv": "^8.2.3",
     "@types/express": "^4.17.15",
     "@types/jsonwebtoken": "^9.0.9",
+    "@types/module-alias": "^2.0.4",
     "@types/node": "^18.11.15",
     "@types/validator": "^13.15.2",
     "@typescript-eslint/eslint-plugin": "^8.34.1",
     "@typescript-eslint/parser": "^8.34.1",
     "eslint": "^8.57.1",
     "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-import-resolver-typescript": "^4.4.4",
     "eslint-plugin-import": "^2.31.0",
     "nodemon": "^3.1.10",
     "prettier": "^3.3.3",

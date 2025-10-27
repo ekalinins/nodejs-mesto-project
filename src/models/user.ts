@@ -1,7 +1,7 @@
 import mongoose, { Schema, Document, Model } from 'mongoose';
 import validator from 'validator';
-import { ERROR_MESSAGES } from 'common/error-messages';
-import { linkRegExp } from 'common';
+import { ERROR_MESSAGES } from '@/common/error-messages';
+import { linkRegExp } from '@/common';
 import { Models } from './models-constants';
 
 export interface IUser {

@@ -1,6 +1,6 @@
 import { ErrorRequestHandler } from 'express';
-import { HttpStatuses } from 'common';
-import { ERROR_MESSAGES } from 'common/error-messages';
+import { HttpStatuses } from '@/common';
+import { ERROR_MESSAGES } from '@/common/error-messages';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars,no-unused-vars
 export const errorHandler: ErrorRequestHandler = (err, req, res, _) => {
