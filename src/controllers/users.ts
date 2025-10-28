@@ -62,9 +62,7 @@ export const createUser = async (
   next: NextFunction,
 ) => {
   try {
-    const {
-      avatar, name, about, email, password,
-    } = req.body as IUser;
+    const { avatar, name, about, email, password } = req.body as IUser;
 
     const hashPassword = await bcrypt.hash(password, 10);
 
@@ -190,7 +188,7 @@ export const logout = async (
   next: NextFunction,
 ) => {
   try {
-    res.clearCookie('jwt', {
+    res.clearCookie('token', {
       httpOnly: true,
       secure: true,
       sameSite: 'none',
