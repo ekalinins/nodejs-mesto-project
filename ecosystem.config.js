@@ -8,6 +8,7 @@ module.exports = {
   apps: [{
     name: 'api-service',
     script: './dist/index.js',
+    node_args: '-r module-alias/register',
   }],
 
   deploy: {
