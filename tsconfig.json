@@ -3,9 +3,6 @@
     "target": "es6",
     "module": "commonjs",
     "baseUrl": "./",
-    "paths": {
-      "@/*": ["src/*"]
-    },
     "moduleResolution": "node",
     "allowJs": true,
     "checkJs": false,

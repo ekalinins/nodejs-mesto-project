@@ -1,5 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
-import User, { IUser } from '@/models/user';
+import bcrypt from 'bcryptjs';
+import jwt from 'jsonwebtoken';
+import User, { IUser } from '../models/user';
 import {
   BadRequestError,
   ConflictError,
@@ -9,12 +11,10 @@ import {
   isValidationError,
   MongooseDuplicateErrorCode,
   NotFoundError,
-} from '@/utils';
-import { ERROR_MESSAGES } from '@/common/error-messages';
-import { HttpStatuses } from '@/common';
-import bcrypt from 'bcryptjs';
-import jwt from 'jsonwebtoken';
-import { DEFAULT_JWT_SECRET } from '@/common/constants';
+} from '../utils';
+import { ERROR_MESSAGES } from '../common/error-messages';
+import { HttpStatuses } from '../common';
+import { DEFAULT_JWT_SECRET } from '../common/constants';
 
 const { JWT_SECRET = DEFAULT_JWT_SECRET } = process.env;
 

@@ -1,13 +1,13 @@
 import { NextFunction, Request, Response } from 'express';
-import Card from '@/models/card';
+import Card from '../models/card';
 import {
   BadRequestError,
   ForbiddenError,
   isCastError,
   isValidationError,
   NotFoundError,
-} from '@/utils';
-import { ERROR_MESSAGES, SUCCESS_MESSAGES } from '@/common/error-messages';
+} from '../utils';
+import { ERROR_MESSAGES, SUCCESS_MESSAGES } from '../common/error-messages';
 
 export const getAllCards = async (
   _: Request,

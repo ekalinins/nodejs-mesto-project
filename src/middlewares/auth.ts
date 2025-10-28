@@ -1,8 +1,8 @@
 import { NextFunction, Request, Response } from 'express';
-import { UnauthorizedError } from '@/utils';
-import { ERROR_MESSAGES } from '@/common/error-messages';
 import jwt, { JwtPayload } from 'jsonwebtoken';
-import { DEFAULT_JWT_SECRET } from '@/common/constants';
+import { UnauthorizedError } from '../utils';
+import { ERROR_MESSAGES } from '../common/error-messages';
+import { DEFAULT_JWT_SECRET } from '../common/constants';
 
 const { JWT_SECRET = DEFAULT_JWT_SECRET } = process.env;
 

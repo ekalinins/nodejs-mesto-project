@@ -1,9 +1,7 @@
-import 'module-alias/register';
-
 import mongoose from 'mongoose';
 import 'dotenv/config';
 import { Server } from 'http';
-import { logger } from '@/utils';
+import { logger } from './utils';
 import app from './app';
 
 const { APP_PORT = 3001, DB_URL = 'mongodb://localhost:27017/mestodb' } = process.env;

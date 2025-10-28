@@ -5,8 +5,8 @@ import {
   deleteCard,
   likeCard,
   unlikeCard,
-} from '@/controllers/cards';
-import { validateCardId } from '@/middlewares';
+} from '../controllers/cards';
+import { validateCardId } from '../middlewares';
 
 const router = Router();
 

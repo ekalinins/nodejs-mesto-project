@@ -1,5 +1,5 @@
 import 'express';
-import { Payload } from '@/types';
+import { Payload } from './types';
 
 declare namespace NodeJS {
   interface ProcessEnv {
