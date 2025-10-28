@@ -12,7 +12,7 @@ import {
 import { ERROR_MESSAGES } from '@/common/error-messages';
 import { errors } from 'celebrate';
 import cookieParser from 'cookie-parser';
-import { createUser, login } from '@/controllers/users';
+import { createUser, login, logout } from '@/controllers/users';
 import { NotFoundError } from '@/utils/errors';
 
 const app = express();
@@ -28,6 +28,7 @@ app.post('/signup', validateSignup, createUser);
 app.post('/signin', validateSignin, login);
 
 app.use(auth);
+app.post('/logout', logout);
 app.use('/users', usersRouter);
 app.use('/cards', cardsRouter);
 

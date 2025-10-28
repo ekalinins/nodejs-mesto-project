@@ -184,6 +184,23 @@ export const login = async (
   }
 };
 
+export const logout = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    res.clearCookie('jwt', {
+      httpOnly: true,
+      secure: true,
+      sameSite: 'none',
+    });
+    res.send({ message: 'Logged out' });
+  } catch (err) {
+    next(err);
+  }
+};
+
 export const getCurrentUser = async (
   req: Request,
   res: Response,
