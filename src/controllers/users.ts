@@ -173,7 +173,10 @@ export const login = async (
 
     const token = jwt.sign({ _id: user.id }, JWT_SECRET, { expiresIn: '14d' });
 
-    res.cookie('token', token, { httpOnly: true }).end();
+    res
+      .cookie('token', token, { httpOnly: true })
+      .status(200)
+      .json({ message: 'Login successful' });
   } catch (err) {
     if (isDocumentNotFound(err)) {
       next(new BadRequestError(ERROR_MESSAGES.INVALID_LOGIN_CREDENTIALS));
